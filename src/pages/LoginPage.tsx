@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const LoginPage = ({ onLogin }: { onLogin: (role: string) => void }) => {
   const [username, setUsername] = useState("");
