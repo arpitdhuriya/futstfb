@@ -650,12 +650,29 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginWithRedirect />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<LandingPageAdmin />} />
         <Route path="/user" element={<LandingPageUser />} />
       </Routes>
     </Router>
   );
+}
+
+// Helper component to handle login and redirect
+function LoginWithRedirect() {
+  const navigate = useNavigate();
+
+  // This function will be called from LoginPage after successful login
+  const handleLogin = (role: string) => {
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/user");
+    }
+  };
+
+  return <LoginPage onLogin={handleLogin} />;
 }
 
 export default App;
