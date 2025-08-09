@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import payNow from "./PayNow";
 import { projects } from "../data/projects";
+import { stories as allStories } from "../data/stories";
 import ProjectList from "../components/ProjectList";
+import KanbanBoard from "../components/KanbanBoard";
+
+const currentUser = "alice"; // Replace with actual logged-in user
 
 const LandingPageUser = ({ onLogout }: { onLogout: () => void }) => {
   const [enrolled, setEnrolled] = useState<number[]>([]);
+  const [stories, setStories] = useState(allStories);
 
   const handlePayment = () => {
     payNow({
@@ -19,6 +24,14 @@ const LandingPageUser = ({ onLogout }: { onLogout: () => void }) => {
   const handleEnroll = (projectId: number) => {
     setEnrolled((prev) => [...prev, projectId]);
     alert("Enrolled in project!");
+  };
+
+  const handleStatusChange = (storyId: number, newStatus: string) => {
+    setStories(stories =>
+      stories.map(story =>
+        story.id === storyId ? { ...story, status: newStatus as any } : story
+      )
+    );
   };
 
   return (
@@ -38,6 +51,26 @@ const LandingPageUser = ({ onLogout }: { onLogout: () => void }) => {
           projects={projects.filter((p) => !enrolled.includes(p.id))}
           onEnroll={handleEnroll}
         />
+
+        {enrolled.length > 0 && (
+          <>
+            <h3 className="text-xl font-bold mt-12 mb-4">Your Enrolled Projects</h3>
+            {enrolled.map(pid => {
+              const project = projects.find(p => p.id === pid);
+              if (!project) return null;
+              return (
+                <div key={pid} className="mb-12">
+                  <h4 className="text-lg font-semibold text-blue-400 mb-2">{project.name}</h4>
+                  <KanbanBoard
+                    stories={stories.filter(s => s.projectId === pid)}
+                    currentUser={currentUser}
+                    onStatusChange={handleStatusChange}
+                  />
+                </div>
+              );
+            })}
+          </>
+        )}
       </div>
     </div>
   );
