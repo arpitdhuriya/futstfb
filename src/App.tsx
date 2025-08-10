@@ -21,6 +21,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react
 import LoginPage from "./pages/LoginPage";
 import LandingPageAdmin from "./pages/LandingPageAdmin";
 import LandingPageUser from "./pages/LandingPageUser";
+import ManagerPage from "./pages/ManagerPage";
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -654,6 +655,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<LandingPageAdmin />} />
         <Route path="/user" element={<LandingPageUser />} />
+        <Route path="/manager" element={<ManagerPage />} />
       </Routes>
     </Router>
   );
